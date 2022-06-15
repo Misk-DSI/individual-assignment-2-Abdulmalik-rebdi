@@ -1,13 +1,13 @@
+
 library(tidyverse)
 library(corrplot)
 library(janitor)
-library(gt)
-library(glue)
+
 
 
 #initializing wine from the CSV file since it is , seperated  
 wine <- read.csv("./data/winequality-red.csv")
-head(wine)
+
 
 ####
 wine %>% clean_names() -> wine ##cleans columns and remove spaces and convert it to lower case (snake case)

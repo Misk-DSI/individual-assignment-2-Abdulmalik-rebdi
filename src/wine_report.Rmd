@@ -1,0 +1,143 @@
+---
+title: "Wine EDA report"
+output: html_document
+date: '2022-06-15'
+knit: (function(input, ...) { rmarkdown::render(input,output_dir = "../")})
+
+---
+
+
+**Libraries** I used 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(corrplot)
+library(janitor)
+library(gt)
+wine <- read.csv("~/Documents/individual-assignment-2-Abdulmalik-rebdi/data/winequality-red.csv")
+
+```
+
+**Information about the data **
+this data set has 12 columns as showing here 
+
+
+```{r cars}
+
+ colnames(wine)
+```
+
+the data are ,
+'*fixed acidity*  : which is the most acids involved with wine 
+
+*volatile acidity*: the amount of acetic acid in wine, which at too high of levels can lead to an unpleasant, vinegar taste
+
+*citric acid*: found in small quantities, citric acid can add ‘freshness’ and flavor to wines
+
+*residual sugar*: the amount of sugar remaining after fermentation stops, it’s rare to find wines with less than 1 gram/liter and wines with greater than 45 grams/liter are considered sweet
+
+*chlorides*: the amount of salt in the wine
+
+*free sulfur dioxide*: the free form of SO2 exists in equilibrium between molecular SO2 (as a dissolved gas) and bisulfite ion; it prevents microbial growth and the oxidation of wine
+
+ *total sulfur dioxide*: amount of free and bound forms of S02; in low concentrations, SO2 is mostly undetectable in wine, but at free SO2 concentrations over 50 ppm, SO2 becomes evident in the nose and taste of wine
+
+ *density*: the density of water is close to that of water depending on the percent alcohol and sugar content
+
+ *pH*: describes how acidic or basic a wine is on a scale from 0 (very acidic) to 14 (very basic); most wines are between 3-4 on the pH scale
+
+*sulphates*: a wine additive which can contribute to sulfur dioxide gas (S02) levels, wich acts as an antimicrobial and antioxidant
+
+ *alcohol*: the percent alcohol content of the wine
+ *quality* : the rate of the quality '[sourse](https://rstudio-pubs-static.s3.amazonaws.com/57835_c4ace81da9dc45438ad0c286bcbb4224.html#:~:text=1%20%2D%20fixed%20acidity%3A%20most%20acids,to%20an%20unpleasant%2C%20vinegar%20taste)
+
+to see a first insight to the data it self   
+
+```{r pressure, echo=FALSE}
+
+wine %>% 
+  slice(1:10) %>% 
+  gt()
+
+```
+this show us two things 
+1- all variable are double except quality is integer 
+2- the table is not that consistent and need some clean one way to do that is using `janitor` package 
+```{r}
+wine %>% clean_names() -> wine
+```
+this function will clean columns , remove spaces and convert it to lower case (snake case)
+
+
+
+now lets look more into the data 
+```{r}
+summary(wine)
+```
+we can see the range in `acidity`  and `sugar`  is high 
+the median in `sugar` is 2.2 and the max is 15 but for `acidity` the mean is between the max and the min 
+the `density` has narrow range
+------
+
+**EDA**
+
+first thing after I saw the summary I need to see the correlation  
+```{r}
+
+wineCor <-cor(wine)
+corrplot(wineCor, type="upper", order="hclust",  )
+```
+
+> the plot shows that there are a relation between quality and volatile acidity 
+> the plot shows that there are  a relation between fixed acidity and PH
+and many other
+
+what i want to see is the relation between the quality and volatile acidity 
+  one way is to see the ranges between them and how they are correlate to each other and what kind of correlation it is 
+
+a good approach to see the range is using a box plot 
+
+```{r}
+wine %>% 
+  ggplot(aes(x= quality , y = volatile_acidity)) +geom_boxplot(aes(group = cut_width(quality, 0.25))) 
+```
+this shows that the higher the the quality we will have a lower ranges 
+another thing this plot show is that the higher the the quality the box go down i seems that it is rightskeed 
+to confirm that i made a bar plot 
+
+```{r}
+wine %>% 
+  group_by(quality) %>% 
+  summarise(AVG = mean(volatile_acidity)) %>% 
+  ggplot(aes(x =quality  , y= AVG)) + 
+  geom_bar(stat='identity')+ ##  identity will provide the y-values for the barplot, rather than counting the aggregate number 
+  labs(y="the avrage of  Volatile Acidity ", x=" Quality")
+```
+this make it obvious that the relation is right skewed
+
+another correlation there are is the `fixed_aced` and `p_h` .
+using the range diff i can observe it , but 
+we can't make box plot to find the ranges since there both quantitative data so a better way to see the relation is using scatterplots
+```{r}
+wine %>% 
+ggplot(aes(x= p_h , y = fixed_acidity)) + geom_point()
+```
+
+this shows the relation very clear that it is a negative relation.
+
+
+the correlation graph also shows that there is a relation between the p_h and citric_acid by the same idea above 
+
+```{r}
+wine %>% 
+ggplot(aes(x=  citric_acid, y = p_h)) + geom_point()
+```
+this doesn't show a clear relation between them but we can see that in the begging the points ara close and when the critic acid increse the point git wider 
+
+
+**Conclusion**
+
+
+
+
+
