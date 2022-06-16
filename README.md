@@ -16,5 +16,6 @@ library(janitor)
 library(gt)
 library(here)
 
-# the HTML file
+# links
 https://Abdulmalik-rebdi.github.io/individual-assignment-2-Abdulmalik-rebdi/
+[wine report](./wine_report.html)
