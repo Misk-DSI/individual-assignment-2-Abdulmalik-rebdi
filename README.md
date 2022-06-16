@@ -16,5 +16,3 @@ library(janitor)
 library(gt)
 library(here)
 
-# the HTML file
-https://Abdulmalik-rebdi.github.io/individual-assignment-2-Abdulmalik-rebdi/
