@@ -1,8 +1,7 @@
 ---
 title: "Wine EDA report"
-output: html_document
 date: '2022-06-15'
-knit: (function(input, ...) { rmarkdown::render(input,output_dir = "../")})
+knit: (  function (input, ...) { rmarkdown::render ( input , output_dir = "../") } ) 
 
 ---
 
@@ -57,15 +56,19 @@ to see a first insight to the data it self
 
 wine %>% 
   slice(1:10) %>% 
-  gt()
+  gt() %>% 
+  tab_header(
+    title = "WINE EDA",subtitle = "a better look at WINE table"  )
 
 ```
+
 this show us two things 
 1- all variable are double except quality is integer 
 2- the table is not that consistent and need some clean one way to do that is using `janitor` package 
 ```{r}
 wine %>% clean_names() -> wine
 ```
+
 this function will clean columns , remove spaces and convert it to lower case (snake case)
 
 
@@ -74,6 +77,7 @@ now lets look more into the data
 ```{r}
 summary(wine)
 ```
+
 we can see the range in `acidity`  and `sugar`  is high 
 the median in `sugar` is 2.2 and the max is 15 but for `acidity` the mean is between the max and the min 
 the `density` has narrow range
@@ -88,6 +92,7 @@ wineCor <-cor(wine)
 corrplot(wineCor, type="upper", order="hclust",  )
 ```
 
+
 > the plot shows that there are a relation between quality and volatile acidity 
 > the plot shows that there are  a relation between fixed acidity and PH
 and many other
@@ -101,6 +106,7 @@ a good approach to see the range is using a box plot
 wine %>% 
   ggplot(aes(x= quality , y = volatile_acidity)) +geom_boxplot(aes(group = cut_width(quality, 0.25))) 
 ```
+
 this shows that the higher the the quality we will have a lower ranges 
 another thing this plot show is that the higher the the quality the box go down i seems that it is right skewed 
 to confirm that i made a bar plot 
@@ -113,6 +119,7 @@ wine %>%
   geom_bar(stat='identity')+ ##  identity will provide the y-values for the barplot, rather than counting the aggregate number 
   labs(y="the avrage of  Volatile Acidity ", x=" Quality")
 ```
+
 this make it obvious that the relation is right skewed
 
 another correlation there are is the `fixed_aced` and `p_h` .
@@ -121,6 +128,7 @@ we can't make box plot to find the ranges since there both quantitative data so 
 wine %>% 
 ggplot(aes(x= p_h , y = fixed_acidity)) + geom_point()
 ```
+
 
 this shows the relation very clear that it is a negative relation.
 
@@ -131,6 +139,7 @@ the correlation graph also shows that there is a relation between the p_h and ci
 wine %>% 
 ggplot(aes(x=  citric_acid, y = p_h)) + geom_point()
 ```
+
 this doesn't show a clear relation between them but we can see that in the begging the points are close and when the critic acid increase the point get wider(spread out) .
 
 --------
@@ -141,6 +150,7 @@ ggplot(wine, aes(x=quality )) +
   geom_bar() + 
   labs(y="Num of Observations", x="Wine Quality")
 ```
+
 from this barPlot we can see that the trends are in the middle (average quality)  we can clearly see that quality number 5 is 3x higher than both 7&8
  this could be because the more quality it will be more expensive so buying the wine with higher quality 
 
