@@ -13,8 +13,16 @@ wine <- read.csv("./data/winequality-red.csv")
 wine %>% clean_names() -> wine ##cleans columns and remove spaces and convert it to lower case (snake case)
 
 ##to look more to data
+
 summary(wine)
-head(wine)
+
+wine %>% 
+  head(0)
+  
+wine %>% 
+  slice(1:10) %>% 
+  gt::gt() 
+
 
 ##
 ### it is symtric which make scense that the higher quality will be less and sciense quality ...
@@ -85,7 +93,6 @@ ggplot(wine, aes(x=quality )) +
   labs(y="Num of Observations", x="Wine Quality") 
 ## from this barPlot we can see that the trends are in the middle (average quality)  we can clearly see that quality number 5 is 3x higher than both 7&8
 ## this could be because the more quality it is the more expensive  and not lots of people buying the wine with higher quality 
-
 
 
 

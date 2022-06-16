@@ -102,7 +102,7 @@ wine %>%
   ggplot(aes(x= quality , y = volatile_acidity)) +geom_boxplot(aes(group = cut_width(quality, 0.25))) 
 ```
 this shows that the higher the the quality we will have a lower ranges 
-another thing this plot show is that the higher the the quality the box go down i seems that it is rightskeed 
+another thing this plot show is that the higher the the quality the box go down i seems that it is right skewed 
 to confirm that i made a bar plot 
 
 ```{r}
@@ -116,7 +116,6 @@ wine %>%
 this make it obvious that the relation is right skewed
 
 another correlation there are is the `fixed_aced` and `p_h` .
-using the range diff i can observe it , but 
 we can't make box plot to find the ranges since there both quantitative data so a better way to see the relation is using scatterplots
 ```{r}
 wine %>% 
@@ -132,12 +131,28 @@ the correlation graph also shows that there is a relation between the p_h and ci
 wine %>% 
 ggplot(aes(x=  citric_acid, y = p_h)) + geom_point()
 ```
-this doesn't show a clear relation between them but we can see that in the begging the points ara close and when the critic acid increse the point git wider 
+this doesn't show a clear relation between them but we can see that in the begging the points are close and when the critic acid increase the point get wider(spread out) .
+
+--------
+what is the most used quality ? 
+
+```{r}
+ggplot(wine, aes(x=quality )) +
+  geom_bar() + 
+  labs(y="Num of Observations", x="Wine Quality")
+```
+from this barPlot we can see that the trends are in the middle (average quality)  we can clearly see that quality number 5 is 3x higher than both 7&8
+ this could be because the more quality it will be more expensive so buying the wine with higher quality 
 
 
 **Conclusion**
 
-
-
+from this data we can cunclude that :
+> 1- range in `acidity`  and `sugar`  is high 
+> 2- the difrence between median in `sugar`  maximmum is high
+> 3- the higher the the quality we will have a lower ranges 
+> 4- the relation between  quality and volatile acidity  is right skewed 
+> 5- the relation between `fixed_aced` and `p_h` is negative relation
+> 6- the quality trend is by far the average quality 
 
 
