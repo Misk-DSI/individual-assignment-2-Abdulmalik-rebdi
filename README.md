@@ -18,4 +18,5 @@ library(here)
 
 # links
 https://Abdulmalik-rebdi.github.io/individual-assignment-2-Abdulmalik-rebdi/
+
 [wine report](./wine_report.html)
