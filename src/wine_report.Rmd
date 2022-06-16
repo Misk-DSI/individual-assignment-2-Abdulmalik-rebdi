@@ -13,6 +13,9 @@ library(tidyverse)
 library(corrplot)
 library(janitor)
 library(gt)
+here::i_am(path = "src/wine_report.Rmd")
+library(here)
+here("data", "winequality-red.csv")
 wine <- read.csv("~/Documents/individual-assignment-2-Abdulmalik-rebdi/data/winequality-red.csv")
 
 ```
